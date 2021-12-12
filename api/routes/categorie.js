@@ -24,7 +24,6 @@ router.post("/", (req, res, next) => {
     idCat: req.body.idCat,
     nomCat: req.body.nomCat,
   });
-  //res.status(201).json({ message: "products", newProduit: newProduit });
   newCategorie
     .save()
     .then((result) => {
@@ -42,10 +41,10 @@ router.post("/", (req, res, next) => {
     });
 });
 
-router.get("/:idCat", (req, res, next) => {
-  const id = req.params.idCat;
+router.get("/:id", (req, res, next) => {
+  const id = req.params.id;
   categorie
-    .find({ idCat: id })
+    .find({ _id: id })
     .exec()
     .then((doc) => {
       console.log("From database", doc);
@@ -63,10 +62,10 @@ router.get("/:idCat", (req, res, next) => {
     });
 });
 
-router.put("/:idCat", function (req, res) {
-  var CatId = req.params.idCat;
+router.put("/:id", function (req, res) {
+  var CatId = req.params.id;
   categorie.findOneAndUpdate(
-    { idCat: CatId },
+    { _id: CatId },
     { $set: req.body },
     { new: true },
     (err, doc) => {
@@ -80,10 +79,10 @@ router.put("/:idCat", function (req, res) {
   );
 });
 
-router.delete("/:idCat", (req, res, next) => {
-  const id = req.params.idCat;
+router.delete("/:id", (req, res, next) => {
+  const id = req.params.id;
   categorie
-    .remove({ idCat: id })
+    .findOneAndRemove({ _id: id })
     .exec()
     .then((result) => {
       res.status(200).json(result);

@@ -1,7 +1,7 @@
 import React from "react";
 import { Admin, Resource } from "react-admin";
+import authProvider from "./authProvider";
 import dataprovider from "./dataproviders";
-
 
 import clientIcon from "@material-ui/icons/Group";
 import productIcon from "@material-ui/icons/Book";
@@ -28,10 +28,20 @@ import commandeEdit from "./components/commandeEdit.js";
 import fournisseurList from "./components/fournisseurList";
 import fournisseurCreate from "./components/fournisseurCreate";
 import fournisseurEdit from "./components/fournisseurEdit.js";
+import { createTheme } from "@material-ui/core/styles";
 
+const theme = createTheme({
+  palette: {
+    type: "dark",
+  },
+});
 function App() {
   return (
-    <Admin dataProvider={dataprovider}>
+    <Admin
+      theme={theme}
+      authProvider={authProvider}
+      dataProvider={dataprovider}
+    >
       <Resource
         name="client"
         list={clientsList}

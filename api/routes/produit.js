@@ -45,10 +45,10 @@ router.post("/", (req, res, next) => {
     });
 });
 
-router.get("/:idP", (req, res, next) => {
-  const id = req.params.idP;
+router.get("/:id", (req, res, next) => {
+  const id = req.params.id;
   produit
-    .find({ idP: id })
+    .find({ _id: id })
     .exec()
     .then((doc) => {
       console.log("From database", doc);
@@ -66,10 +66,10 @@ router.get("/:idP", (req, res, next) => {
     });
 });
 
-router.put("/:idP", function (req, res) {
-  var produitId = req.params.idP;
+router.put("/:id", function (req, res) {
+  var produitId = req.params.id;
   produit.findOneAndUpdate(
-    { idP: produitId },
+    { _id: produitId },
     { $set: req.body },
     { new: true },
     (err, doc) => {
@@ -83,10 +83,10 @@ router.put("/:idP", function (req, res) {
   );
 });
 
-router.delete("/:idP", (req, res, next) => {
-  const id = req.params.idP;
+router.delete("/:id", (req, res, next) => {
+  const id = req.params.id;
   produit
-    .remove({ idP: id })
+    .findOneAndRemove({ _id: id })
     .exec()
     .then((result) => {
       res.status(200).json(result);

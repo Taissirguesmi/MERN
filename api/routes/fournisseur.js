@@ -44,10 +44,10 @@ router.post("/", (req, res, next) => {
     });
 });
 
-router.get("/:idF", (req, res, next) => {
-  const id = req.params.idF;
+router.get("/:id", (req, res, next) => {
+  const id = req.params.id;
   fournisseur
-    .find({ idF: id })
+    .find({ _id: id })
     .exec()
     .then((doc) => {
       console.log("From database", doc);
@@ -65,10 +65,10 @@ router.get("/:idF", (req, res, next) => {
     });
 });
 
-router.put("/:idF", function (req, res) {
-  var FourId = req.params.idF;
+router.put("/:id", function (req, res) {
+  var FourId = req.params.id;
   fournisseur.findOneAndUpdate(
-    { idF: FourId },
+    { _id: FourId },
     { $set: req.body },
     { new: true },
     (err, doc) => {
@@ -85,7 +85,7 @@ router.put("/:idF", function (req, res) {
 router.delete("/:idF", (req, res, next) => {
   const id = req.params.idF;
   fournisseur
-    .remove({ idF: id })
+    .findOneAndRemove({ _id: id })
     .exec()
     .then((result) => {
       res.status(200).json(result);

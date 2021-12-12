@@ -44,10 +44,10 @@ router.post("/", (req, res, next) => {
     });
 });
 
-router.get("/:idCli", (req, res, next) => {
-  const id = req.params.idCli;
+router.get("/:id", (req, res, next) => {
+  const id = req.params.id;
   client
-    .find({ idCli: id })
+    .find({ _id: id })
     .exec()
     .then((doc) => {
       console.log("From database", doc);
@@ -65,10 +65,10 @@ router.get("/:idCli", (req, res, next) => {
     });
 });
 
-router.put("/:idCli", function (req, res) {
-  var CliId = req.params.idCli;
+router.put("/:id", function (req, res) {
+  var CliId = req.params.id;
   client.findOneAndUpdate(
-    { idCli: CliId },
+    { _id: CliId },
     { $set: req.body },
     { new: true },
     (err, doc) => {
@@ -82,10 +82,10 @@ router.put("/:idCli", function (req, res) {
   );
 });
 
-router.delete("/:idCli", (req, res, next) => {
-  const id = req.params.idCli;
+router.delete("/:id", (req, res, next) => {
+  const id = req.params.id;
   client
-    .remove({ idCli: id })
+    .findOneAndRemove({ _id: id })
     .exec()
     .then((result) => {
       res.status(200).json(result);

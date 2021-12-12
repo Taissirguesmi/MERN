@@ -43,10 +43,10 @@ router.post("/", (req, res, next) => {
     });
 });
 
-router.get("/:idCom", (req, res, next) => {
-  const id = req.params.idCom;
+router.get("/:id", (req, res, next) => {
+  const id = req.params.id;
   commande
-    .find({ idCom: id })
+    .find({ _id: id })
     .exec()
     .then((doc) => {
       console.log("From database", doc);
@@ -64,10 +64,10 @@ router.get("/:idCom", (req, res, next) => {
     });
 });
 
-router.put("/:idCom", function (req, res) {
-  var ComId = req.params.idCom;
+router.put("/:id", function (req, res) {
+  var ComId = req.params.id;
   commande.findOneAndUpdate(
-    { idCom: ComId },
+    { _id: ComId },
     { $set: req.body },
     { new: true },
     (err, doc) => {
@@ -81,10 +81,10 @@ router.put("/:idCom", function (req, res) {
   );
 });
 
-router.delete("/:idCom", (req, res, next) => {
-  const id = req.params.idCom;
+router.delete("/:id", (req, res, next) => {
+  const id = req.params.id;
   commande
-    .remove({ idCom: id })
+    .findOneAndRemove({ _id: id })
     .exec()
     .then((result) => {
       res.status(200).json(result);

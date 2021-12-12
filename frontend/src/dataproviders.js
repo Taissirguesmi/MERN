@@ -14,24 +14,32 @@ export default {
       filter: JSON.stringify(params.filter),
     };
     const url = `${apiUrl}/${resource}?${stringify(query)}`;
-
-    return httpClient(url).then(({ headers, json }) => ({
-      data: json,
-      total: parseInt(headers.get("content-range").split("/").pop(), 10),
-    }));
+    console.log(url);
+    return httpClient(url).then(({ json }) => {
+      return {
+        data: json.map((resource) => ({ ...resource, id: resource._id })),
+        total: 10,
+      };
+    });
   },
 
-  getOne: (resource, params) =>
-    httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
-      data: json,
-    })),
+  getOne: (resource, params) => {
+    console.log(params.id);
+    return httpClient(`${apiUrl}/${resource}/${params.id}`).then(
+      ({ json }) => ({
+        data: { ...json, id: json._id },
+      })
+    );
+  },
 
   getMany: (resource, params) => {
     const query = {
-      filter: JSON.stringify({ ids: params.ids }),
+      filter: JSON.stringify({ id: params.id }),
     };
     const url = `${apiUrl}/${resource}?${stringify(query)}`;
-    return httpClient(url).then(({ json }) => ({ data: json }));
+    return httpClient(url).then(({ json }) => ({
+      data: json.map((resource) => ({ ...resource, id: resource._id })),
+    }));
   },
 
   getManyReference: (resource, params) => {
@@ -48,25 +56,27 @@ export default {
     const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
     return httpClient(url).then(({ headers, json }) => ({
-      data: json,
+      data: json.map((resource) => ({ ...resource, id: resource._id })),
       total: parseInt(headers.get("content-range").split("/").pop(), 10),
     }));
   },
 
-  update: (resource, params) =>
-    httpClient(`${apiUrl}/${resource}/${params.id}`, {
+  update: (resource, params) => {
+    console.log(`${apiUrl}/${resource}/${params.id}`);
+    return httpClient(`${apiUrl}/${resource}/${params.id}`, {
       method: "PUT",
       body: JSON.stringify(params.data),
-    }).then(({ json }) => ({ data: json })),
+    }).then(({ json }) => ({ data: { ...json, id: resource._id } }));
+  },
 
   updateMany: (resource, params) => {
     const query = {
-      filter: JSON.stringify({ id: params.ids }),
+      filter: JSON.stringify({ id: params.id }),
     };
     return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
       method: "PUT",
       body: JSON.stringify(params.data),
-    }).then(({ json }) => ({ data: json }));
+    }).then(({ json }) => ({ data: { ...json, id: json._id } }));
   },
 
   create: (resource, params) =>
@@ -74,17 +84,17 @@ export default {
       method: "POST",
       body: JSON.stringify(params.data),
     }).then(({ json }) => ({
-      data: { ...params.data, id: json.id },
+      data: { ...params.data, id: json._id },
     })),
 
   delete: (resource, params) =>
     httpClient(`${apiUrl}/${resource}/${params.id}`, {
       method: "DELETE",
-    }).then(({ json }) => ({ data: json })),
+    }).then(({ json }) => ({ data: { ...json, id: json._id } })),
 
   deleteMany: (resource, params) => {
     const query = {
-      filter: JSON.stringify({ id: params.ids }),
+      filter: JSON.stringify({ id: params.id }),
     };
     return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
       method: "DELETE",

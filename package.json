@@ -6,7 +6,7 @@
   "scripts": {
     "client-install": "npm install --prefix frontend",
     "start": "nodemon server.js ",
-    "server": "nodemon server.js --middlewares ./api/routes/client.js",
+    "server": "nodemon server.js",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
@@ -17,6 +17,7 @@
     "@sentry/node": "^6.13.2",
     "body-parser": "^1.19.0",
     "concurrently": "^6.2.2",
+    "cors": "^2.8.5",
     "debug": "^4.3.2",
     "express": "^4.17.1",
     "mogoose": "0.0.1-security",
